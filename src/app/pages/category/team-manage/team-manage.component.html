@@ -1,0 +1,29 @@
+
+<ejs-grid
+#grid
+[allowPaging]="true"
+[editSettings]="editSettings"
+[toolbar]="toolbarOptions"
+[allowTextWrap]="true"
+gridLines="Both"
+[allowFiltering]="true"
+[allowSorting]="true"
+(actionBegin)="actionComplete($event)"
+[pageSettings]="pageSettings"
+[dataSource]="listTeam" width="100%">
+  <e-columns>
+    <e-column field="Name" headerText="Tên Tổ Đội" width="200px"></e-column>
+    <e-column field="Description" headerText="Mô Tả" width="700px"></e-column>
+    <e-column field="Leader.UserName" headerText="Tên Lãnh Đạo"></e-column>
+    <e-column field="TeamMembers" headerText="Thành Viên">
+      <ng-template #template let-data>
+        <div *ngFor="let item of data.TeamMembers">
+          {{ item.User.UserName }}
+        </div>
+      </ng-template>
+    </e-column>
+  </e-columns>
+</ejs-grid>
+<div #container class="root-container"></div>
+<ejs-dialog #ejDialog [visible]="false" [target]="targetElement" width="300px">
+</ejs-dialog>

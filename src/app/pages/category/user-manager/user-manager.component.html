@@ -1,0 +1,154 @@
+
+<p *ngIf="messageDelete" style="color: red">Không thể xóa người dùng này!</p>
+<ejs-grid
+  #grid
+  [dataSource]="listUser"
+  width="100%"
+  [allowFiltering]="true"
+  [allowSorting]="true"
+  [allowPaging]="true"
+  gridLines="Both"
+  [filterSettings]="filterOptions"
+  (actionBegin)="actionComplete($event)"
+  [toolbar]="toolbarOptions"
+  [editSettings]="editSettings"
+  [allowTextWrap]="true"
+>
+  <e-columns>
+    <e-column field="FirstName" headerText="Tên" width="100" >
+      <ng-template #editTemplate let-data>
+        <ejs-textbox
+          [multiline]="true"
+          rows="1"
+          floatLabelType="Auto"
+          placeholder="Tên"
+          [value]="data.FirstName"
+        ></ejs-textbox>
+      </ng-template>
+      <ng-template #filterTemplate let-data>
+        <ejs-textbox (change)="onChange1($event)" placeholder="Tên">
+        </ejs-textbox>
+      </ng-template>
+    </e-column>
+
+    <e-column
+      field="LastName"
+      headerText="Họ"
+      width="100px"
+      editType="editTemplate"
+    >
+      <ng-template #editTemplate let-data>
+        <ejs-textbox
+          [multiline]="true"
+          rows="1"
+          floatLabelType="Auto"
+          placeholder="Họ"
+          [value]="data.LastName"
+        ></ejs-textbox>
+      </ng-template>
+      <ng-template #filterTemplate let-data>
+        <ejs-textbox (change)="onChange2($event)" placeholder="Họ">
+        </ejs-textbox>
+      </ng-template>
+    </e-column>
+    <e-column field="Email" headerText="Email" width="250">
+      <ng-template #editTemplate let-data>
+        <ejs-textbox
+          [multiline]="true"
+          rows="1"
+          floatLabelType="Auto"
+          placeholder="Email"
+          [value]="data.Email"
+        ></ejs-textbox>
+      </ng-template>
+      <ng-template #filterTemplate let-data>
+        <ejs-textbox (change)="onChange4($event)" placeholder="Email">
+        </ejs-textbox>
+      </ng-template>
+    </e-column>
+    <e-column
+      field="UserName"
+      headerText="Tên Tài Khoản"
+      width="150px"
+      editType="editTemplate"
+    >
+      <ng-template #editTemplate let-data>
+        <ejs-textbox
+          [multiline]="true"
+          rows="1"
+          floatLabelType="Auto"
+          placeholder="Tên Tài Khoản"
+          [value]="data.UserName"
+        ></ejs-textbox>
+      </ng-template>
+      <ng-template #filterTemplate let-data>
+        <ejs-textbox (change)="onChange5($event)" placeholder="Tên tài khoản">
+        </ejs-textbox>
+      </ng-template>
+    </e-column>
+    <!-- <e-column field="PassWord" headerText="Mật Khẩu" width="100">
+      <ng-template #editTemplate let-data>
+        <ejs-textbox
+          [multiline]="true"
+          rows="1"
+          floatLabelType="Auto"
+          placeholder="Mật Khẩu"
+          [value]="data.PassWord"
+        ></ejs-textbox>
+      </ng-template>
+    </e-column> -->
+    <e-column field="Tel" headerText="Số Điện Thoại" width="150">
+      <ng-template #editTemplate let-data>
+        <ejs-textbox
+          [multiline]="true"
+          rows="1"
+          floatLabelType="Auto"
+          placeholder="Số Điện Thoại"
+          [value]="data.Tel"
+        ></ejs-textbox>
+      </ng-template>
+      <ng-template #filterTemplate let-data>
+        <ejs-textbox (change)="onChange6($event)" placeholder="Số điện thoại">
+        </ejs-textbox>
+      </ng-template>
+    </e-column>
+    <e-column field="UserRoles" headerText="Nhóm Quyền" width="100" [allowFiltering]="false">
+      <ng-template #template let-data>
+        <div *ngFor="let item of data.UserRoles">
+          {{ item.Role.Name }}
+        </div>
+      </ng-template>
+      
+      <!-- <ng-template #filterTemplate let-data>
+        <ejs-textbox (input)="onChange7($event.target.value)" placeholder="Quyền">
+        </ejs-textbox>
+      </ng-template> -->
+    </e-column>
+    
+      <!-- <e-column field="Teammembers" headerText="Tổ đội" width="120">
+        <ng-template #template let-data>
+          <div *ngFor="let item of data.TeamMembers">
+            {{ item.Team.Name }}
+          </div>
+        </ng-template>
+      </e-column> -->
+      <e-column field="Status" headerText="Trạng thái" width="100">
+        <ng-template #template let-data>
+          {{renderStatus(data)}}
+          </ng-template>
+          <ng-template #filterTemplate let-data>
+            <ejs-dropdownlist
+              id="dropdown"
+              textAlign="Center"
+              placeholder="Trạng thái"
+              style="margin-top: 8px;"
+              (change)="onChange8($event)"
+              [fields]="fields"
+              [dataSource]="listStatus"
+            >
+            </ejs-dropdownlist>
+          </ng-template>
+      </e-column>
+
+    </e-columns>
+  </ejs-grid>

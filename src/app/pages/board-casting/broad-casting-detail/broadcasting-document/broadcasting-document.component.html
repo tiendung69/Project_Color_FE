@@ -1,0 +1,254 @@
+<div
+  style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: -30px;
+  "
+>
+  <div
+    style="
+      display: flex;
+      align-items: center;
+      margin-top: 40px;
+      width: 50%;
+      margin-bottom: -30px;
+    "
+  >
+    <div style="border-bottom: 1px solid #000; flex-grow: 1; width: 25%"></div>
+    <div style="flex-grow: 1; text-align: center">
+      <div
+        style="
+          padding: 0 10px;
+          font-size: 25px;
+          font-family: 'Museo Sans Rounded';
+          font-weight: 900;
+        "
+        class="label-title;"
+      >
+        THÔNG TIN CHUNG
+      </div>
+    </div>
+    <div style="border-bottom: 1px solid #000; flex-grow: 1; width: 25%"></div>
+  </div>
+</div>
+
+<label class="label-title" style="margin-top: 25px"
+  >Đăng ký lịch phát sóng</label
+>
+<!-- thông tin đề cương  -->
+<div>
+  <div class="d-flex container-collapse" (click)="toggleCollapse()">
+    <div class="fa-1x mx-4 my-3">
+      <i [className]="isCollapsed ? 'fa fa-plus' : 'fa fa-minus'"></i>
+    </div>
+    <span class="label-custom">Thông tin đăng ký</span>
+  </div>
+  <form [ngbCollapse]="isCollapsed" (ngSubmit)="onSubmit()" #form="ngForm">
+    <div id="collapseExample">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <label class="label-custom">Đài truyền hình*</label>
+              <ejs-dropdownlist
+                [dataSource]="listVtv"
+                [value]="listVtvDetail.ParentId"
+                [fields]="dropdownFiels"
+                (valueChange)="onChange($event)"
+              >
+              </ejs-dropdownlist>
+            </div>
+
+            <div class="col-md-4">
+              <label class="label-custom">Kênh truyền hình*</label>
+              <ejs-dropdownlist
+                [dataSource]="listChannel"
+                [fields]="dropdownFiels"
+                [value]=" listVtvDetail.Id"
+                (valueChange)="
+                  onInputChange({ key: 'ChannelId', value: $event })
+                "
+              >
+              </ejs-dropdownlist>
+              <p class="text-danger" *ngIf="messageChannel">Thông tin này là bắt buộc</p>
+            </div>
+
+            <div class="col-md-4">
+              <label class="label-custom">Thời lượng phát sóng (Phút)</label>
+              <ejs-textbox [value]="listBroadCasting !== undefined ? listBroadCasting.Duration : ''" type="number"
+              (valueChange)="
+                  onInputChange({ key: 'Duration', value: $event })
+                ">
+              </ejs-textbox>
+            </div>
+            <div class="col-md-4">
+              <label class="label-custom">Thời gian đăng ký</label>
+              <ejs-datetimepicker 
+              [value]="listBroadCasting !== undefined ? listBroadCasting.SubmissionTime : ''"
+              type="datetime"
+              format="dd/MM/yyyy hh:mm a"
+              (valueChange)="onInputChange({ key: 'SubmissionTime', value: $event })"
+            ></ejs-datetimepicker>
+            </div>
+            <div class="col-md-4">
+              <label class="label-custom">Thời gian phát sóng*</label>
+              <ejs-datetimepicker
+                [value]="listBroadCasting !== undefined ? listBroadCasting.BroadcastingTime: ''"
+                type="date"
+                format="dd/MM/yyyy hh:mm a"
+                (valueChange)="
+                  onInputChange({ key: 'BroadcastingTime', value: $event })"
+              >
+              </ejs-datetimepicker>
+              <p style="color: red;" *ngIf="checkBroadcastingTime">Thông tin này là bắt buộc</p>
+            </div>
+            <div class="col-md-4">
+              <label class="label-custom">Người tiếp nhận</label>
+              <ejs-textbox [value]=" listBroadCasting !== undefined ? listBroadCasting.Reciever : ''"
+              (valueChange)="
+                  onInputChange({ key: 'Reciever', value: $event })
+                "> </ejs-textbox>
+            </div>
+          </div>
+          <div class="row col justify-content-center mt-5" *ngIf="!checkStatus">
+            <button
+              class="btn btn-secondary btn-custom mr-4 btn-custom-large py-2"
+              type="button"
+              (click)="onCancelClick()"
+            >
+              Hủy
+            </button>
+            <button
+              class="btn btn-primary btn-custom btn-custom-large py-2"
+              type="submit"
+              content="Save"
+            >
+              Lưu
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<div class="hr"></div>
+<div [ngbCollapse]="idBroadCasting ? false : true">
+  <div class="d-flex container-collapse" (click)="toggleCollapse1()">
+    <div class="fa-1x mx-4 my-3">
+      <i [className]="isCollapsed1 ? 'fa fa-plus' : 'fa fa-minus'"></i>
+    </div>
+    <span class="label-custom">Các tài liệu đính kèm</span>
+  </div>
+  <ejs-grid
+  #gridVideo
+    [dataSource]="listBroadCastingDocument"
+    [toolbar]="toolbarOptions"
+    [ngbCollapse]="isCollapsed1"
+    [editSettings]="editSettings"
+    [allowPaging]="true"
+    [allowSorting]="true"
+    [allowTextWrap]="true"
+    [pageSettings]="{ pageSize: 5 }"
+    (actionBegin)="actionBeginDocuments($event)"
+    (actionComplete)="actionCompleteDoc($event)"
+    (rowDataBound)="rowDataBound($event)"
+    (commandClick)="commandClick($event)"
+  >
+    <e-columns>
+      <e-column field="Description" headerText="Mô tả" width="60%">
+        <ng-template #editTemplate let-data>
+          <div class="multiline">
+            <app-textarea-input
+              [multiline]="true"
+              key="Description"
+              (newItemEvent)="onInputChangeDoc($event)"
+              key="Description"
+              [value]="data.Description"
+              placeHolder="Mô Tả"
+            ></app-textarea-input>
+          </div>
+        </ng-template>
+      </e-column>
+      <e-column field="FileUrl" headerText="Tệp đính kèm" width="40%">
+        <ng-template let-data #template>
+          <a
+            style="cursor: pointer"
+            *ngIf="data.FileUrl"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="{{ data.Description }}"
+            (click)="onFileUrlClick(data.FileUrl)"
+          >
+            {{ getFileName(data.FileUrl) }}
+          </a></ng-template
+        >
+        <ng-template #editTemplate let-data>
+          <div
+            class="input-group file-upload"
+            *ngIf="!data?.FileUrl; else other_content"
+          >
+            <input
+              type="file"
+              (change)="fileChange(input)"
+              #input
+              class="file-upload-btn"
+            />
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Choose a file..."
+              value="{{ file }}"
+            />
+            <i
+              class="fa fa-times delete-file"
+              (click)="removeFile()"
+              *ngIf="file"
+            ></i>
+            <span class="input-group-append">
+              <button class="btn btn-primary" type="button">
+                <i class="fa fa-upload"></i>
+              </button>
+            </span>
+          </div>
+          <ng-template #other_content
+            ><a
+              style="cursor: pointer"
+              class="form-control"
+              *ngIf="data.FileUrl"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="{{ data.Description }}"
+              (click)="onFileUrlClick(data.FileUrl)"
+            >
+              {{ getFileName(data.FileUrl) }}
+            </a></ng-template
+          >
+          <p *ngIf="messageFile" style="color: red; margin-top: 7px">
+            Thông tin này là bắt buộc.
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column
+      headerText=""
+      textAlign="Center"
+      width="90px"
+      [commands]="commands"
+    >
+    </e-column>
+    </e-columns>
+  </ejs-grid>
+</div>
+<app-video-compressor
+  *ngIf="open"
+  (addSuccess)="onSuccessUploadPart($event)"
+  (onHideModal)="onHideModal()"
+  [idUploadPart]="uploadPartId"
+></app-video-compressor>
+
+<div #container class="root-container"></div>
+<ejs-dialog #ejDialogVideo [visible]="false" [target]="targetElement" width="300px">
+</ejs-dialog>

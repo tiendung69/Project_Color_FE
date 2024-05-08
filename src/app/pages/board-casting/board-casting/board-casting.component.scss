@@ -1,0 +1,27 @@
+.orientationcss .e-headercelldiv {
+  transform: rotate(90deg);
+}
+.e-gridheader .e-columnheader{
+  font-weight: bold;
+  font-size: 13px;
+}
+.e-gridheader .e-headercelldiv{
+  font-weight: bold;
+  font-size: 13px;
+}
+::ng-deep .e-treegrid .e-headertext{
+  font-weight: bold;
+  font-size: 13px;
+  color:black
+}
+// .e-grid {
+//   font-family: cursive;
+// }
+// .e-column[field="Preproduction"] {
+//   /* Thiết lập kích thước chữ */
+//   font-size: 25px;
+// }
+
+:host ::ng-deep .e-datepicker .e-input-group input {
+  text-align: center;
+}

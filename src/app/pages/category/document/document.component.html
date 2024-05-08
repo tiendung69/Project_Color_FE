@@ -1,0 +1,46 @@
+<ejs-grid
+  #grid
+  [dataSource]="listCommoncategory"
+  [toolbar]="toolbarOptions"
+  [allowTextWrap]="true"
+  [editSettings]="editSettings"
+  width="100%"
+  [allowPaging]="true"
+  [pageSettings]="pageSettings"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [query]="query"
+  [allowSorting]="true"
+  height="455"
+>
+  <e-columns>
+    <e-column
+      field="Name"
+      headerText="Tên loại tài liệu"
+      [validationRules]="validationNameRules"
+    >
+    </e-column>
+    <!-- <e-column
+      field="Type"
+      headerText="Type"
+      editType="numericedit"
+      [edit]="typeNumericParams"
+      [validationRules]="validationTypeRules"
+    >
+    </e-column> -->
+    <e-column
+      field="Description"
+      headerText="Mô tả"
+      [validationRules]="validationDescriptionRules"
+    >
+    </e-column>
+    <e-column
+      field="ParentId"
+      headerText="ParentId"
+      editType="numericedit"
+      [edit]="parentidNumericParams"
+      [validationRules]="validationParentIdRules"
+    >
+    </e-column>
+  </e-columns>
+</ejs-grid>
