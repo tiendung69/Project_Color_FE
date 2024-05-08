@@ -1,0 +1,74 @@
+
+<ejs-grid
+  #grid
+  [dataSource]="listCate"
+  [toolbar]="toolbarOptions"
+  [editSettings]="editSettings"
+  width="max"
+  gridLines="Both"
+  [filterSettings]="filterOptions"
+  [allowFiltering]="true"
+  [allowTextWrap]="true"
+  (actionBegin)="actionBegin($event)"
+  (actionComplete)="actionComplete($event)"
+  [allowSorting]="true"
+  [allowPaging]="true"
+  [pageSettings]="pageSettings"
+  height="455"
+>
+  <e-columns>
+    <e-column
+      field="Name"
+      headerText=" Tỉnh/ Thành phố"
+      width="30%"
+      [validationRules]="NameValidationRules"
+      headerTextAlign="Center"
+    >
+      <ng-template #editTemplate let-data>
+        <div class="multiline">
+          <ejs-textbox
+            name="Name"
+            #default
+            [value]="data.Name"
+            floatLabelType="Auto"
+            rows="1"
+            placeholder=" Tỉnh/ Thành phố*"
+            (change)="changeStatus($event)"
+            required="true"
+          ></ejs-textbox>
+        </div>
+      </ng-template>
+      <ng-template #filterTemplate let-data>
+        <ejs-textbox (change)="onChange1($event)">
+        </ejs-textbox>
+      </ng-template>
+    </e-column>
+    <e-column
+      field="Description"
+      headerText="Mô Tả"
+      textAlign="Left"
+      width="70%"
+      headerTextAlign="Center"
+    >
+      <ng-template #editTemplate let-data>
+        <div class="multiline">
+          <ejs-textbox
+            #default
+            [multiline]="true"
+            [value]="data.Description"
+            floatLabelType="Auto"
+            placeholder="Mô Tả"
+            (change)="changeStatus2($event)"
+          ></ejs-textbox>
+        </div>
+      </ng-template>
+      <ng-template #filterTemplate let-data>
+        <ejs-textbox (change)="onChange2($event)">
+        </ejs-textbox>
+      </ng-template>
+    </e-column>
+  </e-columns>
+</ejs-grid>
+<div #container class="root-container"></div>
+<ejs-dialog #ejDialog [visible]="false" [target]="targetElement" width="300px">
+</ejs-dialog>

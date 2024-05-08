@@ -1,0 +1,24 @@
+.orientationcss .e-headercelldiv {
+    transform: rotate(90deg);
+  }
+  .e-gridheader .e-columnheader{
+    font-weight: bold;
+    font-size: 13px;
+  }
+  .e-gridheader .e-headercelldiv{
+    font-weight: bold;
+    font-size: 13px;
+  }
+  ::ng-deep .e-treegrid .e-headertext{
+    font-weight: bold;
+    font-size: 13px;
+    color:black
+  }
+
+  .e-column[field="Preproduction"] {
+    font-size: 25px;
+  }
+  .e-input-group.e-control-wrapper .e-input[readonly] {
+    -webkit-text-fill-color: #3333;
+    background-color: #3333;
+}

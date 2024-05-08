@@ -1,0 +1,30 @@
+<ejs-grid
+  #grid
+  [dataSource]="dataSearch"
+  [allowTextWrap]="true"
+  [editSettings]="editSettings"
+  width="100%"
+  [allowPaging]="true"
+  [pageSettings]="pageSettings"
+  [allowSorting]="true"
+  height="455"
+  (recordDoubleClick)="rowSelected($event)"
+>
+  <e-columns>
+    <!-- <e-column field="dbId" headerText="Id"></e-column> -->
+    <!-- <e-column field="dbName" headerText="dbName"></e-column> -->
+    <e-column field="dbValues" headerText="Loại">
+     <ng-template #template let-data>
+      
+        {{renderTypeTopic(data.dbValues[0]?.Type, data?.tableName)}}
+      </ng-template>  
+    </e-column>
+    <!-- <e-column field="tableName" headerText="Tên bảng"></e-column> -->
+    <e-column field="fieldName" headerText="Tên cột">
+      <ng-template #template let-data>
+        {{renderName(data.dbValues[0]?.Type, data?.tableName, data?.fieldName)}}
+      </ng-template>
+    </e-column>
+    <e-column field="content" headerText="Nội dung"></e-column>
+  </e-columns>
+</ejs-grid>

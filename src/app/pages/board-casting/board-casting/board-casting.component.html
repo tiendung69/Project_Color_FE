@@ -1,0 +1,46 @@
+<ejs-treegrid [dataSource]="listBoardCasting" hasChildMapping='Broadcastings' childMapping='Broadcastings'
+[editSettings]="editSettings" [toolbar]="toolbarOptions" [pageSettings]="pageSettings" [allowPaging]="true"
+(actionBegin)="actionBegin($event)" [allowFiltering]='true' [filterSettings]="filterOptions" (queryCellInfo)="queryCellInfo($event)" [allowTextWrap]="true" gridLines="Both">
+  <e-columns>
+    <e-column field="Preproduction" isPrimaryKey="true" headerText="Tên phim" headerTextAlign="Center" width="250px">
+     
+    </e-column>
+    
+
+    <e-column field="ParentId" headerText="Đài truyền hình" textAlign="Center" headerTextAlign="Center">
+      <ng-template #template let-data>
+        {{ data.ParentId ? renderVTVT(data.ParentId) : '' }}
+      </ng-template>
+    </e-column>
+    
+    <e-column field="Channel" headerText="Kênh truyền hình" textAlign="Center" headerTextAlign="Center"></e-column>
+    <e-column field="Duration" headerText="Thời lượng phát sóng (phút)" textAlign="Center"headerTextAlign="Center"></e-column>
+    <e-column field="SubmissionTime" headerText="Thời gian đăng ký lịch"  type="date"  format="dd/MM/yyyy hh:mm a" textAlign="Center" headerTextAlign="Center">
+      <ng-template #filterTemplate let-data>
+        <ejs-datepicker
+          (change)="onChange5($event)"
+          format="dd/MM/yyyy"
+          placeholder="Thời gian đăng ký lịch"
+          [enableMask]="enableMaskSupport"
+        >
+        </ejs-datepicker>
+      </ng-template>
+    </e-column>
+     <e-column field="BroadCastingTime" headerText="Thời gian phát sóng" type="date"  format="dd/MM/yyyy hh:mm a" textAlign="Center" headerTextAlign="Center">
+      <ng-template #filterTemplate let-data>
+        <ejs-datepicker
+          (change)="onChange4($event)"
+          format="dd/MM/yyyy"
+          placeholder="Thời gian phát sóng"
+          [enableMask]="enableMaskSupport"
+        >
+        </ejs-datepicker>
+      </ng-template>
+    </e-column>
+   
+  
+   
+    <e-column field="Reciever" headerText="Người tiếp nhận" textAlign="Center" headerTextAlign="Center"></e-column>
+  </e-columns>
+</ejs-treegrid>
+

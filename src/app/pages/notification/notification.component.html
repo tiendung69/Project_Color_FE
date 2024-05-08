@@ -1,0 +1,210 @@
+<div class="clearfix">
+  <ul id="messagesTabs" class="nav nav-tabs nav-justified border-0">
+    <li class="nav-item">
+      <a
+        class="nav-link active transition nav-item-custom"
+        data-toggle="tab"
+        (click)="switchTab(0)"
+        ><span class="badger-txt">Tất cả </span>
+        <!-- <span class="e-badge e-badge-success">48</span> -->
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link transition nav-item-custom"
+        (click)="switchTab(1)"
+        data-toggle="tab"
+        ><span class="badger-txt">Chưa xem </span
+        ><span
+          *ngIf="newNotify && newNotify.length > 0"
+          class="e-badge e-badge-danger e-badge-overwrite"
+          >{{ renderNumberNotify(newNotify.length) }}</span
+        ></a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link transition nav-item-custom"
+        data-toggle="tab"
+        (click)="switchTab(2)"
+        ><span class="badger-txt">Đã xem </span
+        ><span
+          *ngIf="readNotify && readNotify.length > 0"
+          class="e-badge e-badge-info e-badge-overwrite"
+          >{{ renderNumberNotify(readNotify.length) }}</span
+        ></a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+        (click)="switchTab(3)"
+        class="nav-link transition nav-item-custom"
+        data-toggle="tab"
+        style="position: relative"
+        ><span class="badger-txt">Đã xử lý </span
+        ><span
+          *ngIf="doneNotify && doneNotify.length > 0"
+          class="e-badge e-badge-info e-badge-overwrite"
+          >{{ renderNumberNotify(doneNotify.length) }}</span
+        ></a
+      >
+    </li>
+  </ul>
+</div>
+<ng-scrollbar pointerEventsMethod="scrollbar" id="scroll-list">
+  <div class="tab-content card">
+    <div class="tab-pane card-body active" id="allTab">
+      <div class="list">
+        <a
+          *ngFor="let message of listNoty"
+          href="javascript:void(0);"
+          class="transition"
+          [className]="message.Status === 0 ? 'unread-noti' : ''"
+        >
+          <div class="list-content" (click)="onReadNotify(message)">
+            <h3 id="title-{{ message.Id }}">
+              {{ displayHtmlTitle(message) }}
+            </h3>
+            <p id="content-{{ message.Id }}">
+              {{ displayHtmlContent(message) }}
+            </p>
+          </div>
+          <div class="container-btn">
+            <div style="width: 120px">
+              <button
+                *ngIf="message.Status === 2; else templateName"
+                class="btn btn-primary btn-done disabled"
+              >
+                Đã xử lý
+              </button>
+              <ng-template #templateName>
+                <button
+                  (click)="onDoneNotify(message)"
+                  class="btn btn-primary btn-done"
+                >
+                  Cập nhập đã xử lý
+                </button>
+              </ng-template>
+            </div>
+            <span
+              (click)="onReadNotify(message)"
+              class="pull-right"
+              style="font-weight: 500; width: 100%; text-align: right"
+              ><i class="fa fa-clock-o"></i>
+              {{ renderDateTime(message.CreatedAt) }}</span
+            >
+          </div>
+        </a>
+      </div>
+    </div>
+    <!-- <div class="tab-pane card-body" id="unreadTab">
+      <div class="list">
+        <a
+          *ngFor="let message of newNotify"
+          href="javascript:void(0);"
+          class="transition"
+          [className]="message.Status === 0 ? 'unread-noti' : ''"
+        >
+          <div class="list-content">
+            <h3>
+              {{ message.Title }}
+            </h3>
+            <p>{{ message.Detail }}</p>
+          </div>
+          <div class="container-btn">
+            <div style="width: 100%">
+              <button
+                *ngIf="message.Status === 2; else templateName"
+                class="btn btn-primary btn-done"
+              >
+                Đã xử lý
+              </button>
+              <ng-template #templateName>
+                <button class="btn btn-primary btn-done">Xử lý</button>
+              </ng-template>
+            </div>
+            <span
+              class="pull-right"
+              style="font-weight: 500; width: 100%; text-align: right"
+              ><i class="fa fa-clock-o"></i>
+              {{ renderDateTime(message.CreatedAt) }}</span
+            >
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="tab-pane card-body" id="readTab">
+      <div class="list">
+        <a
+          *ngFor="let message of readNotify"
+          href="javascript:void(0);"
+          class="transition"
+          [className]="message.Status === 0 ? 'unread-noti' : ''"
+        >
+          <div class="list-content">
+            <h3>
+              {{ message.Title }}
+            </h3>
+            <p>{{ message.Detail }}</p>
+          </div>
+          <div class="container-btn">
+            <div style="width: 100%">
+              <button
+                *ngIf="message.Status === 2; else templateName"
+                class="btn btn-primary btn-done"
+              >
+                Đã xử lý
+              </button>
+              <ng-template #templateName>
+                <button class="btn btn-primary btn-done">Xử lý</button>
+              </ng-template>
+            </div>
+            <span
+              class="pull-right"
+              style="font-weight: 500; width: 100%; text-align: right"
+              ><i class="fa fa-clock-o"></i>
+              {{ renderDateTime(message.CreatedAt) }}</span
+            >
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="tab-pane card-body" id="doneTab">
+      <div class="list">
+        <a
+          *ngFor="let message of doneNotify"
+          href="javascript:void(0);"
+          class="transition"
+          [className]="message.Status === 0 ? 'unread-noti' : ''"
+        >
+          <div class="list-content">
+            <h3>
+              {{ message.Title }}
+            </h3>
+            <p>{{ message.Detail }}</p>
+          </div>
+          <div class="container-btn">
+            <div style="width: 100%">
+              <button
+                *ngIf="message.Status === 2; else templateName"
+                class="btn btn-primary btn-done"
+              >
+                Đã xử lý
+              </button>
+              <ng-template #templateName>
+                <button class="btn btn-primary btn-done">Xử lý</button>
+              </ng-template>
+            </div>
+            <span
+              class="pull-right"
+              style="font-weight: 500; width: 100%; text-align: right"
+              ><i class="fa fa-clock-o"></i>
+              {{ renderDateTime(message.CreatedAt) }}</span
+            >
+          </div>
+        </a>
+      </div>
+    </div> -->
+  </div>
+</ng-scrollbar>
+<!-- </div> -->

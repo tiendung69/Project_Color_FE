@@ -1,0 +1,96 @@
+<ejs-grid
+  #grid
+  [dataSource]="listMovieApproval"
+  [editSettings]="editSettings"
+  [allowPaging]="true"
+  gridLines="Both"
+  [pageSettings]="pageSettings"
+  [allowTextWrap]="true"
+  [toolbar]="toolbarOptions"
+  (actionBegin)="actionBegin($event)"
+  [allowFiltering]="true"
+  [filterSettings]="filterOptions"
+>
+  <e-columns>
+    <e-column field="postProduction" headerText="Phim" headerTextAlign="Center" width="240px">
+      <!-- <ng-template #template let-data>
+        <div>{{ data.PostProductionPlaning.PreProduction.Name }}</div>
+      </ng-template> -->
+    </e-column>
+    <!-- <e-column
+      field="ApprovalDate"
+      headerTextAlign="Center"
+      headerText="Ngày phê duyệt"
+      textAlign="Center"
+    >
+      <ng-template #template let-data>
+        {{ data.ApprovalDate | date : "dd/MM/yyyy" }}
+      </ng-template>
+    </e-column> -->
+    <e-column
+    field="StartAt"
+    headerText="Thời gian bắt đầu duyệt"
+    textAlign="Center"
+    headerTextAlign="Center"
+    width="200px"
+    format="dd/MM/yyyy hh:mm a"
+    type="date"
+  ><ng-template #filterTemplate let-data>
+    <ejs-datepicker
+      (change)="onChange5($event)"
+      format="dd/MM/yyyy"
+      placeholder="Thời gian bắt đầu duyệt"
+      [enableMask]="enableMaskSupport"
+    >
+    </ejs-datepicker>
+  </ng-template></e-column>
+  <e-column
+  field="EndAt"
+  headerText="Thời gian kết thúc duyệt"
+  textAlign="Center"
+  headerTextAlign="Center"
+  width="200px"
+  format="dd/MM/yyyy hh:mm a"
+  type="date"
+><ng-template #filterTemplate let-data>
+  <ejs-datepicker
+    (change)="onChange4($event)"
+    format="dd/MM/yyyy"
+    placeholder="Thời gian kết thúc duyệt"
+    [enableMask]="enableMaskSupport"
+  >
+  </ejs-datepicker>
+</ng-template></e-column>
+    <!-- <e-column field="Content" headerText="Nội dung"  headerTextAlign="Center"></e-column> -->
+    <!-- <e-column field="Comment" headerText="Nhận xét"  headerTextAlign="Center" width="250px"></e-column> -->
+    <e-column field="Suggested" headerText="Chú thích của lãnh đạo"  headerTextAlign="Center">
+      <!-- <ng-template #template let-data>
+        <div *ngFor="let item of data.MovieapprovalDetails">
+        {{ item.Suggested }}
+      </div>
+      </ng-template> -->
+    </e-column>
+    <e-column field="CreatedBy" headerText="Đạo diễn" width="120px" headerTextAlign="Center" textAlign="Center">
+      <ng-template #template let-data>
+        {{handleRenderMember(data.CreatedBy)}}
+      </ng-template></e-column>
+    <!-- <e-column field="No" headerText="Lượt duyệt"  headerTextAlign="Center" textAlign="Center" width="140px"></e-column> -->
+    <e-column field="Status" headerText="Trạng thái"  headerTextAlign="Center" textAlign="Center" width="140px">
+      <ng-template #template let-data>
+        {{ rederStatus(data) }}
+      </ng-template>
+      <ng-template #filterTemplate let-data>
+        <ejs-dropdownlist
+          id="dropdown"
+          textAlign="Center"
+          placeholder="Trạng thái"
+          (change)="onChange($event)"
+          [fields]="fields"
+          [dataSource]="listStatus"
+          style="margin-top:10px"
+        >
+        </ejs-dropdownlist>
+      </ng-template>
+    </e-column>
+  </e-columns>
+</ejs-grid>

@@ -1,0 +1,199 @@
+
+<div class="card">
+  <div class="card-body">
+    <form (ngSubmit)="onSubmit()" #form="ngForm">
+      <!-- ten -->
+      <div class="row">
+        <div class="form-group col-md-3">
+          <label for="FirstName" style="font-weight: bold;">Tên* </label>
+          <!-- <ejs-textbox
+            (valueChange)="onChangeFirstName($event)"
+            class="input-custom"
+            placeholder="Nhập Tên..."
+            floatLabelType="Never"
+            [value]="userDetail.FirstName"
+          ></ejs-textbox> -->
+
+          <app-textarea-input
+          (newItemEvent)="onInputChange($event)"
+          key="FirstName"
+          [value]="userDetail.FirstName"
+          placeHolder="Nhập Tên..."
+        ></app-textarea-input>
+        <p *ngIf="messageFirstName" style="color:red">Thông tin này là bắt buộc.</p>
+        </div>
+
+        <!-- ho  -->
+        <div class="form-group col-md-3">
+          <label for="LastName" style="font-weight: bold;">Họ* </label>
+          <!-- <ejs-textbox
+            class="input-custom"
+            (valueChange)="onChangeLastName($event)"
+            placeholder="Nhập Họ..."
+            floatLabelType="Never"
+            [value]="userDetail.LastName"
+          ></ejs-textbox> -->
+          <app-textarea-input
+          (newItemEvent)="onInputChange($event)"
+          key="LastName"
+          [value]="userDetail.LastName"
+          placeHolder="Nhập Họ..."
+        ></app-textarea-input>
+        <p *ngIf="messageLastName" style="color:red">Thông tin này là bắt buộc.</p>
+        </div>
+
+        <!-- email -->
+        <div class="form-group col-md-6">
+          <label for="Email" style="font-weight: bold;">Email*</label>
+          <app-textarea-input
+          (newItemEvent)="onInputChange($event)"
+          key="Email"
+          id="email"
+          [readonly]="idUser"
+          type='email'
+          [value]="userDetail.Email"
+          placeHolder="Nhập Email..."
+        ></app-textarea-input>
+        <p *ngIf="messageEmail" style="color: red">Thông tin này là bắt buộc.</p>
+        <p *ngIf="messageEmailUsed" style="color: red">Email này đã được sử dụng.</p>
+        </div>
+
+        <!-- ten tai khoan  -->
+        <div class="form-group col-md-3">
+          <label for="UserName" style="font-weight: bold;">Tên Tài Khoản*</label>
+          <app-textarea-input
+   
+          (newItemEvent)="onInputChange($event)"
+          key="UserName"
+          [value]="userDetail.UserName"
+          [readonly]="idUser"
+          placeHolder="Nhập Tên Tài Khoản..."
+        ></app-textarea-input>
+        <p *ngIf="messageUserName" style="color: red">Thông tin này là bắt buộc.</p>
+        <p *ngIf="messageUserNameUsed" style="color: red">Tài khoản này đã được sử dụng.</p>
+        </div>
+
+        <!-- mat khau -->
+        <div class="form-group col-md-3">
+          <label for="PassWord" style="font-weight: bold;">Mật Khẩu*</label>
+          <app-textarea-input
+
+          (newItemEvent)="onInputChange($event)"
+          key="PassWord"
+          [readonly]="idUser"
+          [value]="userDetail.PassWord"
+          placeHolder="Nhập Mật Khẩu..."
+        ></app-textarea-input>
+        <p *ngIf="messagePassword" style="color: red">Thông tin này là bắt buộc.</p>
+        <p *ngIf="messageCheckChar" style="color: red">Mật khẩu phải có ít nhất 6 kí tự !</p>
+        </div>
+
+        <!-- So dien thoai -->
+        <div class="form-group col-md-6">
+          <label for="Tel" style="font-weight: bold;">Số Điện Thoại</label>
+          <app-textarea-input
+
+          (newItemEvent)="onInputChange($event)"
+          key="Tel"
+          [value]="userDetail.Tel"
+          placeHolder="Nhập Số Điện Thoại..."
+        ></app-textarea-input>
+        </div>
+
+        <!-- phong ban  -->
+        <div class="form-group col-md-6">
+          <label style="font-weight: bold;">Phòng Ban</label>
+          <ejs-dropdownlist
+            id="Scenario"
+            floatLabelType="Never"
+            [value]="userDetail.DepartId"
+            [dataSource]="listCate"
+            [fields]="dropdownFields"
+            placeholder="Chọn Phòng Ban"
+            (valueChange)="onInputChange({key:'DepartId', value: $event})"
+          ></ejs-dropdownlist>
+        </div>
+
+        <!-- Quyen -->
+
+        <div class="form-group col-md-6">
+          <label for="Scenario" style="font-weight: bold;">Nhóm Quyền*</label>
+          <ejs-multiselect
+            *ngIf="getListRole.length > 0"
+            placeholder="Nhóm Quyền"
+            [dataSource]="getListRole"
+            [fields]="dropdownFields"
+            (valueChange)="onChangeRole($event)"
+            [value]="role">
+          </ejs-multiselect>
+          <p *ngIf="messageRole" style="color: red">Thông tin này là bắt buộc.</p>
+        </div>
+
+
+        <div class="form-group col-md-6">
+          <label for="Status" style="font-weight: bold;">Trạng thái*</label>
+          <ejs-dropdownlist
+            placeholder="Chọn trạng thái"
+            [dataSource]="listStatus"
+            [fields]="dropdownFieldStatus"
+            (valueChange)="onChangeStatus($event)"
+            [value]="userDetail.Status">
+          </ejs-dropdownlist>
+          <p *ngIf="messageStatus" style="color: red">Thông tin này là bắt buộc.</p>
+        </div>
+        <!-- <div class="form-group col-md-6">
+          <label for="TeamMembers" style="font-weight: bold;">Tổ Đội</label>
+         <ejs-textbox 
+         readonly="true"
+         readonly
+         placeHolder="Người dùng này đang không nằm trong tổ đội nào"
+        [value]="team"
+         ></ejs-textbox>
+        </div> -->
+        <!-- <app-textarea-input
+        readonly="true"
+        readonly
+        placeHolder="Người dùng này đang không nằm trong tổ đội nào"
+       [value]="team"
+      ></app-textarea-input> -->
+        <!-- <ng-template #template let-data>
+          <div *ngFor="let item of data.TeamMembers">
+            {{item.Team.Name}}
+          </div>
+        </ng-template> -->
+        <!-- <div class="form-group col-md-6">
+          <label for="Scenario">Tổ Đội Sản Xuất</label>
+          <ejs-dropdownlist
+    
+          placeholder="Chọn Tổ Đội Sản Xuất"
+  
+          [fields]="dropdownFields"
+          [value]="team">
+        </ejs-dropdownlist>
+        </div> -->
+        
+      </div>
+      <div
+      class="row justify-content-center mt-4 mb-5"
+    
+    >
+      <button
+        class="btn btn-secondary btn-custom mr-4 btn-custom-large py-2"
+        type="button"
+        (click)="onCancelClick()"
+      >
+        Hủy
+      </button>
+      <button
+        class="btn btn-primary btn-custom btn-custom-large py-2"
+        type="submit"
+        content="Save"
+        (click)="submitAndDisable()"
+        [disabled]="isButtonDisabled"
+      >
+        Lưu
+      </button>
+    </div>
+    </form>
+  </div>
+</div>

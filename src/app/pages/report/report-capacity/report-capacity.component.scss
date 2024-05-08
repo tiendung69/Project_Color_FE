@@ -1,0 +1,71 @@
+.label-custom {
+    font-weight: bold;
+
+  }
+  
+.e-grid .e-headercell {
+
+    color: black;
+    background-color: white;
+}
+.e-grid .e-headertext{
+    font-weight: bold;
+    font-size: 13px;
+}
+:host ::ng-deep {
+    .e-grid {
+      .e-gridheader {
+        font-size: 26px;
+        .e-headerrow {
+          &:nth-child(odd) {
+            background-color: #f4fbfb;
+           
+          }
+  
+          &:nth-child(even) {
+            background-color: #ffffff;
+          }
+        }
+      }
+  
+      .e-row {
+        &:nth-child(odd) {
+          background-color: #f4fbfb;
+        }
+  
+        &:nth-child(even) {
+          background-color: #ffffff;
+        }
+      }
+    }
+  }
+  
+  :host ::ng-deep .e-datepicker .e-input-group input {
+    text-align: center;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #D6EEEE;
+  }
+  a:link, a:visited {
+    background-color: #f44336;
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  a:hover, a:active {
+    background-color: red;
+  }

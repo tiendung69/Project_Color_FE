@@ -1,0 +1,91 @@
+<ejs-grid
+#grid
+[dataSource]="listCate"
+[editSettings]="editSettings"
+[toolbar]="toolbarOptions"
+[allowFiltering]="true"
+(actionComplete)="actionComplete($event)"
+[allowPaging]="true"
+gridLines="Both"
+[pageSettings]="pageSettings"
+[allowSorting]="true" height='455'
+width="100%"
+[allowTextWrap]="true"
+(actionBegin)="actionBegin($event)"
+>
+<e-columns>
+  <e-column
+      field="Name"
+      headerText=" Xã/Phường"
+      width="30%"
+      [validationRules]="NameValidationRules"
+      headerTextAlign="Center"
+    >
+      <ng-template #editTemplate let-data>
+        <div class="multiline">
+          <ejs-textbox
+            name="Name"
+            #default
+            [value]="data.Name"
+            floatLabelType="Auto"
+            rows="1"
+            placeholder=" Xã/Phường*"
+            (change)="changeStatus($event)"
+            required="true"
+          ></ejs-textbox>
+        </div>
+      </ng-template>
+    </e-column>
+  <e-column
+    field="Description"
+    headerText="Mô Tả"
+    textAlign="Left"
+  :disableHtmlEncode="true"
+  headerTextAlign="Center"
+    width="40%">
+    <ng-template #editTemplate let-data> 
+      <div class="multiline">
+        <ejs-textbox #default [multiline]='true' [value]="data.Description"
+            floatLabelType='Auto' placeholder='Mô Tả' (change)="changeStatus2($event)"  ></ejs-textbox>
+        </div>
+      </ng-template>
+      <ng-template #template let-data> 
+        <div class="multiline">
+            <div class="" [innerHTML]="data.Description"></div>
+          </div>
+        </ng-template>
+  </e-column>
+  <e-column
+    field="ParentId"
+    headerText="Quận/ Huyện"
+    headerTextAlign="Center"
+    editType="dropdownedit" width="30%">
+    <ng-template #template let-data>
+      {{ getNameByParentId(data.ParentId) }}
+    </ng-template>
+    <ng-template #editTemplate let-data >
+      <ejs-dropdownlist
+      floatLabelType="Always"
+        [dataSource]="parentIdList"
+        [fields]="dropdownFields"
+        floatLabelType="Auto"
+        style="margin-top: 10px;"
+        [(ngModel)]="data.ParentId"
+        placeholder="Quận/ Huyện*"
+        (change)="onchange($event)">
+      </ejs-dropdownlist>
+    </ng-template>
+    <ng-template #filterTemplate let-data>
+      <ejs-dropdownlist
+        id="dropdown"
+        textAlign="Center"
+        (change)="onChange3($event)"
+        [fields]="fields"
+        style="margin-top: 8px;"
+        [dataSource]="parentIdList"
+      >
+      </ejs-dropdownlist>
+    </ng-template>
+  </e-column>
+</e-columns>
+</ejs-grid>

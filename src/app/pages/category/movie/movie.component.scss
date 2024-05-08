@@ -1,0 +1,40 @@
+.label-custom {
+  font-weight: bold;
+}
+
+.e-grid .e-headercell {
+
+color: black;
+background-color: white;
+}
+.e-grid .e-headertext{
+font-weight: bold;
+font-size: 13px;
+}
+:host ::ng-deep {
+  .e-grid {
+    .e-gridheader {
+      font-size: 26px;
+      .e-headerrow {
+        &:nth-child(odd) {
+          background-color: #f4fbfb;
+         
+        }
+
+        &:nth-child(even) {
+          background-color: #ffffff;
+        }
+      }
+    }
+
+    .e-row {
+      &:nth-child(odd) {
+        background-color: #f4fbfb;
+      }
+
+      &:nth-child(even) {
+        background-color: #ffffff;
+      }
+    }
+  }
+}

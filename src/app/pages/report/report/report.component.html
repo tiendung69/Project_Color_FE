@@ -1,0 +1,193 @@
+<div class="card">
+  <span
+    class="card-title"
+    style="
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      margin-top: 0.75rem;
+      color: black;
+    "
+    >Báo cáo chi phí sản xuất phim</span
+  >
+  <div class="card-body">
+    <form #form="ngForm">
+      <div class="row">
+       
+        <div class="form-group col-md-3">
+          <ejs-daterangepicker
+            name="DateTime"
+            format="dd/MM/yyyy"
+            floatLabelType="Auto"
+            cssClass="e-outline"
+            placeholder="Thời gian bắt đầu dự kiến"
+            (change)="onChangeEstimatedStartDate($event)"
+          >
+          </ejs-daterangepicker>
+        </div>
+        <div class="form-group col-md-3">
+          <ejs-daterangepicker
+            name="DateTime"
+            format="dd/MM/yyyy"
+            floatLabelType="Auto"
+            cssClass="e-outline"
+            placeholder="Thời gian kết thúc dự kiến"
+            (change)="onChangeEstimatedEndDate($event)"
+          >
+          </ejs-daterangepicker>
+        </div>
+        <div class="form-group col-md-3">
+          <ejs-daterangepicker
+            name="DateTime"
+            format="dd/MM/yyyy"
+            floatLabelType="Auto"
+            cssClass="e-outline"
+            placeholder="Thời gian bắt đầu thực tế"
+            (change)="onChangeStartDate($event)"
+          >
+          </ejs-daterangepicker>
+        </div>
+        <div class="form-group col-md-3">
+          <ejs-daterangepicker
+            name="DateTime"
+            format="dd/MM/yyyy"
+            floatLabelType="Auto"
+            cssClass="e-outline"
+            placeholder="Thời gian kết thúc thực tế"
+            (change)="onChangeEndDate($event)"
+          >
+          </ejs-daterangepicker>
+        </div>
+        <div class="form-group col-md-2">
+          <ejs-dropdownlist
+            [dataSource]="listUser"
+            cssClass="e-outline"
+            [fields]="dropdownField"
+            placeholder="Đạo diễn"
+            floatLabelType="Auto"
+            (change)="onChangeDirector($event)"
+          >
+          </ejs-dropdownlist>
+        </div>
+        <div class="form-group col-md-2">
+          <ejs-dropdownlist
+            type="number"
+            cssClass="e-outline"
+            floatLabelType="Auto"
+            placeholder="Kinh phí dự kiến"
+            [dataSource]="dropdownBudget"
+            [fields]="field"
+            (change)="onChangeCost($event)"
+          >
+          </ejs-dropdownlist>
+        </div>
+        <div class="form-group col-md-2">
+          <ejs-dropdownlist
+            type="number"
+            cssClass=" e-outline"
+            floatLabelType="Auto"
+            placeholder="Kinh phí thực tế"
+            [dataSource]="dropdownBudget"
+            [fields]="field"
+            (change)="onChangeCost2($event)"
+          >
+          </ejs-dropdownlist>
+        </div>
+       
+        <div class="form-group col-md-3">
+          <ejs-dropdownlist
+            [dataSource]="listProgress"
+            cssClass="e-outline"
+            [fields]="field"
+            placeholder="Phần trăm kinh phí chênh lệch"
+            floatLabelType="Auto"
+            (change)="onChangeDifferenceBudget($event)"
+          >
+          </ejs-dropdownlist>
+        </div>
+        <div class="form-group col-md-3">
+          <ejs-dropdownlist
+            [dataSource]="listPercentDifference"
+            cssClass="e-outline"
+            [fields]="field"
+            placeholder="Kinh phí chênh lệch"
+            floatLabelType="Auto"
+            (change)="onChangePercentDifferenceBudget($event)"
+          >
+          </ejs-dropdownlist>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="getReportByFilter()"
+        >
+          Xem báo cáo
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div style="margin-top: 15px"></div>
+<ejs-grid
+#grid
+id="DefaultExport"
+  [dataSource]="listData"
+  [allowPaging]="true"
+  [allowTextWrap]="true"
+  [allowFiltering]="true"
+  [allowExcelExport]="true"
+  gridLines="Both"
+  [toolbar]="toolbarOptions"
+  (excelQueryCellInfo)="excelQueryCellInfo($event)"
+    (toolbarClick)="toolbarClick($event)"
+    (queryCellInfo)="queryCellInfo($event)"
+  [query]="query"
+>
+  <e-columns>
+  
+    <e-column field="OutName" headerText="Đề cương" headerTextAlign="Center"></e-column>
+    <e-column field="PreProductionPlanName" headerText="Phim" headerTextAlign="Center"></e-column>
+    <e-column field="UserName" headerText="Đạo diễn" headerTextAlign="Center"></e-column>
+    <e-column field="MinEstimatedBegin" headerText="Thời gian dự kiến bắt đầu" format="dd/MM/yyyy" headerTextAlign="Center" textAlign="Center" [allowFiltering]="false">
+      <ng-template #template let-data>
+        {{ data.MinEstimatedBegin | date : "dd/MM/yyyy" }}
+      </ng-template></e-column
+    >
+    <e-column
+      field="PostProductionFromDate"
+      headerText="Thời gian thực tế bắt đầu" format="dd/MM/yyyy" headerTextAlign="Center" textAlign="Center" [allowFiltering]="false"
+    >
+      <ng-template #template let-data>
+        {{ data.PostProductionFromDate | date : "dd/MM/yyyy" }}
+      </ng-template></e-column
+    >
+    <e-column field="EstimatedEnd" headerText="Thời gian dự kiến hoàn thành" format="dd/MM/yyyy" headerTextAlign="Center" textAlign="Center" [allowFiltering]="false">
+      <ng-template #template let-data>
+        {{ data.EstimatedEnd | date : "dd/MM/yyyy" }}
+      </ng-template></e-column
+    >
+    <e-column
+      field="PostProductionToDate"
+      headerText="Thời gian thực tế hoàn thành" format="dd/MM/yyyy" headerTextAlign="Center" textAlign="Center" [allowFiltering]="false"
+    >
+      <ng-template #template let-data>
+        {{ data.PostProductionToDate | date : "dd/MM/yyyy" }}
+      </ng-template></e-column
+    >
+    <e-column field="SumExpense" format="#,##0" headerText="Kinh phí thực tế(VND)" headerTextAlign="Center" textAlign="Center"></e-column>
+    <e-column field="EstimatedBudget" format="#,##0" headerText="Kinh phí dự kiến(VND)" headerTextAlign="Center" textAlign="Center" [allowFiltering]="false">
+       <ng-template #template let-data>
+        <div class="">
+            <div>
+                <div>{{data.EstimatedBudget | number}}</div>
+            </div>
+        </div>
+    </ng-template> 
+    </e-column>
+    <e-column field="ExpenseDifference" format="#,##0" headerText="Kinh phí chênh lệch so với dự kiến(VND)" headerTextAlign="Center" textAlign="Center" ></e-column>
+    <e-column field="PercentageDifference" headerText="Phần trăm chênh lệch kinh phí(%)" headerTextAlign="Center" textAlign="Center" ></e-column>
+  </e-columns>
+</ejs-grid>

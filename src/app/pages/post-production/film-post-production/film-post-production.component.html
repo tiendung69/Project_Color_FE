@@ -1,0 +1,124 @@
+<ejs-grid
+  #grid
+  [dataSource]="listPostProduction"
+  [editSettings]="editSettings"
+  [filterSettings]="filterOptions"
+  [toolbar]="toolbarOptions"
+  [allowPaging]="true"
+  [allowFiltering]="true"
+  gridLines="Both"
+  [allowTextWrap]="true"
+  [allowSorting]="true"
+  [pageSettings]="pageSettings"
+  (actionBegin)="actionBegin($event)"
+>
+  <e-columns>
+    <e-column
+      field="PreProduction.Name"
+      headerText="Phim"
+      width="250px"
+      headerTextAlign="Center"
+    >
+      <ng-template #filterTemplate let-data>
+        <ejs-textbox (change)="onChangeFilm($event)"> </ejs-textbox>
+      </ng-template>
+    </e-column>
+    <e-column
+      field="FromDate"
+      headerText="Thời gian bắt đầu"
+      textAlign="Center"
+      headerTextAlign="Center"
+      width="200px"
+      format="dd/MM/yyyy"
+      type="date"
+    >
+      <ng-template #filterTemplate let-data>
+        <ejs-datepicker
+          (change)="onChange0($event)"
+          format="dd/MM/yyyy"
+          placeholder="Thời gian bắt đầu"
+          [enableMask]="enableMaskSupport"
+        >
+        </ejs-datepicker> </ng-template
+    ></e-column>
+    <e-column
+      field="ToDate"
+      headerText="Thời gian kết thúc"
+      textAlign="Center"
+      headerTextAlign="Center"
+      width="200px"
+      format="dd/MM/yyyy"
+      type="date"
+    >
+      <ng-template #filterTemplate let-data>
+        <ejs-datepicker
+          (change)="onChange1($event)"
+          format="dd/MM/yyyy"
+          placeholder="Thời gian kết thúc"
+          [enableMask]="enableMaskSupport"
+        >
+        </ejs-datepicker>
+      </ng-template>
+    </e-column>
+    <e-column
+      field="Budget"
+      headerTextAlign="Center"
+      headerText="Ngân sách (VND)"
+      textAlign="Center"
+      format="N0"
+      width="160px"
+    >
+      <ng-template #filterTemplate let-data>
+        <ejs-textbox type="number" (change)="onChangeBudget($event)">
+        </ejs-textbox>
+      </ng-template>
+      <ng-template #template let-data>
+        <div class="">
+          <div>
+            <div>{{ data.Budget | number }}</div>
+          </div>
+        </div>
+      </ng-template>
+    </e-column>
+    <e-column
+      field="WorkContent"
+      headerText="Nội dung thực hiện"
+      width="400px"
+      headerTextAlign="Center"
+    >
+      <ng-template #filterTemplate let-data>
+        <ejs-textbox (change)="onChangeTitle($event)"> </ejs-textbox>
+      </ng-template>
+    </e-column>
+    <e-column field="PreProduction" headerText="Đạo diễn" width="100px" headerTextAlign="Center" textAlign="Center" *ngIf="checkRole">
+      <ng-template #template let-data>
+        {{handleRenderMember(data.PreProduction.CreatedBy)}}
+      </ng-template></e-column>
+    <e-column
+      field="Status"
+      headerText="Trạng thái"
+      width="180px"
+      headerTextAlign="Center"
+      textAlign="Center"
+    >
+      <ng-template #template let-data>
+        <div>{{ renderStatus(data) }}</div>
+      </ng-template>
+      <ng-template #filterTemplate let-data>
+        <ejs-dropdownlist
+          id="dropdown"
+          textAlign="Center"
+          placeholder="Trạng thái"
+          (change)="onChange($event)"
+          [fields]="fields"
+          style="margin-top: 10px"
+          [dataSource]="listStatus"
+        >
+        </ejs-dropdownlist>
+      </ng-template>
+    </e-column>
+  </e-columns>
+</ejs-grid>
+<div #container class="root-container"></div>
+<ejs-dialog #ejDialog [visible]="false" [target]="targetElement" width="300px">
+</ejs-dialog>

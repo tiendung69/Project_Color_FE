@@ -1,0 +1,181 @@
+<p *ngIf="doValidation" style="color: red">
+  Đề tài này đã được duyệt, không thể xóa.
+</p>
+<div>
+  <ejs-grid
+    #grid
+    [dataSource]="listTopic"
+    [toolbar]="toolbarOptions"
+    [allowFiltering]="true"
+    gridLines="Both"
+    [allowSorting]="true"
+    [editSettings]="editSettings"
+    (actionBegin)="actionBegin($event)"
+    (actionComplete)="actionComplete($event)"
+    [allowPaging]="true"
+    [filterSettings]="filterOptions"
+    [allowTextWrap]="true"
+    [pageSettings]="{ pageSize: 10 }"
+  >
+    <e-columns>
+      <e-column field="Category.Name" headerText="Loại đề tài" width="15%" headerTextAlign="Center"></e-column>
+      <e-column
+        field="Name"
+        headerText="Tên đề tài"
+        width="15%"
+        headerTextAlign="Center"
+        [validationRules]="NameValidationRules"
+      >
+        <ng-template #filterTemplate let-data>
+          <ejs-textbox (change)="onChange1($event)">
+          </ejs-textbox>
+        </ng-template>
+      </e-column>
+      <e-column
+        field="Description"
+        headerTextAlign="Center"
+        headerText="Mô tả đề tài"
+        width="35%"
+        [validationRules]="DescriptionValidationRules"
+      >
+        <ng-template #filterTemplate let-data>
+          <ejs-textbox (change)="onChange2($event)" >
+          </ejs-textbox>
+        </ng-template>
+      </e-column>
+      <!-- <e-column
+      id="aaaa"
+        field="Scenario"
+        headerText="	Kịch bản sơ bộ"
+        width="340px"
+        [validationRules]="ScenarioValidationRules"
+      ></e-column> -->
+      <e-column
+        field="EstimatedBegin"
+        headerTextAlign="Center"
+        headerText="Thời gian dự kiến thực hiện"
+        width="10%"
+        format="dd/MM/yyyy"
+        textAlign="Center"
+        editType="datepickeredit"
+      >
+       <ng-template #template let-data>
+          {{ data.EstimatedBegin | date : "dd/MM/yyyy" }}
+        </ng-template>
+     
+      <ng-template #filterTemplate let-data>
+        <ejs-datepicker
+          (change)="onChange3($event)"
+          format="dd/MM/yyyy"
+          placeholder="Thời gian dự kiến thực hiện"
+          [enableMask]="enableMaskSupport"
+        >
+        </ejs-datepicker>
+      </ng-template>
+    </e-column > 
+      <e-column
+        field="EstimatedEnd"
+        headerTextAlign="Center"
+        headerText="Thời gian dự kiến hoàn thành"
+        width="10%"
+        textAlign="Center"
+        editType="datepickeredit"
+      >
+        <ng-template #template let-data>
+          {{ data.EstimatedEnd | date : "dd/MM/yyyy" }}
+        </ng-template>
+        <ng-template #filterTemplate let-data>
+          <ejs-datepicker
+            (change)="onChange4($event)"
+            format="dd/MM/yyyy"
+            placeholder="Thời gian dự kiến hoàn thành"
+            [enableMask]="enableMaskSupport"
+          >
+          </ejs-datepicker>
+        </ng-template>
+      </e-column>
+      <!-- <e-column
+    field="TopicDocument"
+    headerText="Các văn bản, quy định, hình ảnh kèm theo"
+    width="260px"
+  >
+    <ng-template #template let-data>
+      <div class="" *ngFor="let doc of data.TopicDocuments; last as isLast">
+        <a
+          *ngIf="doc.FileUrl"
+          data-toggle="tooltip"
+          data-placement="top"
+          title="{{ doc.Description }}"
+          [class]="{ urlClass: !isLast }"
+          (click)="onFileUrlClick(doc.FileUrl)"
+        >
+          {{ getFileName(doc.FileUrl) }}
+        </a>
+      </div>
+    </ng-template>
+  </e-column> -->
+
+      <e-column
+        field="EstimatedBroadcasting"
+        headerText="Thời gian dự kiến phát sóng"
+        width="10%"
+        headerTextAlign="Center"
+        textAlign="Center"
+        editType="datepickeredit"
+        template="#template"
+        type="date"
+      >
+        <ng-template #template let-data>
+          {{ data.EstimatedBroadcasting | date : "dd/MM/yyyy" }}
+        </ng-template>
+        <ng-template #filterTemplate let-data>
+          <ejs-datepicker
+            (change)="onChange5($event)"
+            format="dd/MM/yyyy"
+            placeholder="Thời gian dự kiến phát sóng"
+            [enableMask]="enableMaskSupport"
+          >
+          </ejs-datepicker>
+        </ng-template>
+      </e-column>
+
+      <!-- <e-column field="TopicMembers" headerText="Nhân lực dự kiến" width="120px"
+        ><ng-template let-data #template>
+          <div style="text-align: center">{{ data.TopicMembers.length }}</div>
+        </ng-template>
+      </e-column> -->
+      <e-column field="CreatedBy" headerText="Đạo diễn" width="120px" headerTextAlign="Center" *ngIf="checkRole" textAlign="Center">
+        <ng-template #template let-data>
+          {{handleRenderMember(data.CreatedBy)}}
+        </ng-template>
+      </e-column>
+      <e-column
+      field="Status"
+      headerTextAlign="Center"
+      headerText="Trạng thái"
+      textAlign="Center"
+      width="10%"
+    >
+      <ng-template #template let-data>
+        {{ renderStatus(data) }}
+      </ng-template>
+    
+      <ng-template #filterTemplate let-data>
+        <ejs-dropdownlist
+          id="dropdown"
+          textAlign="Center"
+          placeholder="Trạng thái"
+          (change)="onChange($event)"
+          [fields]="fields"
+          style="margin-top:8px"
+          [dataSource]="listStatus"
+        >
+        </ejs-dropdownlist>
+      </ng-template>
+    </e-column>
+    </e-columns>
+  </ejs-grid>
+</div>
+<div #container class="root-container"></div>
+<ejs-dialog #ejDialog [visible]="false" [target]="targetElement" width="300px">
+</ejs-dialog>
