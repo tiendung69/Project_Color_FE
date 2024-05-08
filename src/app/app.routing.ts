@@ -1,44 +1,195 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules  } from '@angular/router'; 
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { PagesComponent } from './pages/pages.component';
 import { BlankComponent } from './pages/blank/blank.component';
 import { SearchComponent } from './pages/search/search.component';
 import { NotFoundComponent } from './pages/errors/not-found/not-found.component';
+import { AppSettings } from './app.settings';
+import { ApiService } from './core/services/api.service';
+import { CommoncategoryService } from './core/services/commoncategory.service';
+import { ListVTVComponent } from './pages/category/list-vtv/list-vtv.component';
+import { GuardService } from './core/services/guard.service';
+import { AppRoles } from './core/utils/constant';
 
 export const routes: Routes = [
   {
-    path: '', 
+    path: '',
     component: PagesComponent,
-    children:[
-      { path: '', loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule), data: { breadcrumb: 'Dashboard' }  },          
-      { path: 'membership', loadChildren: () => import('./pages/membership/membership.module').then(m => m.MembershipModule), data: { breadcrumb: 'Membership' } },
-      { path: 'ui', loadChildren: () => import('./pages/ui/ui.module').then(m => m.UiModule), data: { breadcrumb: 'UI' } },
-      { path: 'form-elements', loadChildren: () => import('./pages/form-elements/form-elements.module').then(m => m.FormElementsModule), data: { breadcrumb: 'Form Elements' } },
-      { path: 'tables', loadChildren: () => import('./pages/tables/tables.module').then(m => m.TablesModule), data: { breadcrumb: 'Tables' } },
-      { path: 'tools', loadChildren: () => import('./pages/tools/tools.module').then(m => m.ToolsModule), data: { breadcrumb: 'Tools' } },
-      { path: 'calendar', loadChildren: () => import('./pages/calendar/app-calendar.module').then(m => m.AppCalendarModule), data: { breadcrumb: 'Calendar' } },
-      { path: 'mailbox', loadChildren: () => import('./pages/mailbox/mailbox.module').then(m => m.MailboxModule), data: { breadcrumb: 'Mailbox' } },
-      { path: 'maps', loadChildren: () => import('./pages/maps/maps.module').then(m => m.MapsModule), data: { breadcrumb: 'Maps' } },
-      { path: 'charts', loadChildren: () => import('./pages/charts/charts.module').then(m => m.ChartsModule), data: { breadcrumb: 'Charts' } },
-      { path: 'dynamic-menu', loadChildren: () => import('./pages/dynamic-menu/dynamic-menu.module').then(m => m.DynamicMenuModule), data: { breadcrumb: 'Dynamic Menu' }  },  
-      { path: 'profile', loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfileModule), data: { breadcrumb: 'Profile' }  },         
-      { path: 'blank', component: BlankComponent, data: { breadcrumb: 'Blank page' } },
-      { path: 'search', component: SearchComponent, data: { breadcrumb: 'Search' } }
-    ]
-  },
-  { path: 'login', loadChildren: () => import('./pages/login/login.module').then(m => m.LoginModule) },
-  { path: 'register', loadChildren: () => import('./pages/register/register.module').then(m => m.RegisterModule) },
-  { path: '**', component: NotFoundComponent }
-]; 
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./pages/dashboard/dashboard.module').then(
+            (m) => m.DashboardModule
+          ),
+        data: { breadcrumb: 'Dashboard' },
+      },
+      {
+        path: 'danh-muc',
+        loadChildren: () =>
+          import('./pages/category/category.module').then(
+            (m) => m.CategoryModule
+          ),
+        data: {
+          breadcrumb: 'Danh mục',
+          // routeKey: 'danhmuc',
+        //  roles: [AppRoles.ADMIN],
+        },
+     //   canActivate: [GuardService],
+      },
+      {
+        path: 'quan-ly-tien-ky',
+        loadChildren: () =>
+          import('./pages/topic/topic.module').then((m) => m.TopicModule),
+        data: {
+          breadcrumb: 'Quản lý sản xuất tiền kỳ',
+          // routeKey: 'quanlysanxuattienky',
+     //     roles: [AppRoles.LEADER, AppRoles.DIRECTOR],
+        },
+      //  canActivate: [GuardService],
+      },
+      // {
+      //   path: 'quan-ly-nguoi-dung',
+      //   loadChildren: () =>
+      //     import('./pages/users/usermanager.module').then(
+      //       (m) => m.UsermanagerModule
+      //     ),
+      //   data: {
+      //     breadcrumb: 'Quản lý người dùng',
+      //     routeKey: 'quanlynguoidung',
+      //   },
+      //   canActivate: [GuardService],
+      // },
+      {
+        path: 'quan-ly-san-xuat-hau-ky',
+        loadChildren: () =>
+          import('./pages/post-production/post-production.module').then(
+            (m) => m.PostProductionModule
+          ),
+        data: {
+          breadcrumb: 'Quản lý sản xuất hậu kỳ',
+          // routeKey: 'quanlysanxuathauky',
+       //   roles: [AppRoles.LEADER, AppRoles.DIRECTOR],
+        },
+      //  canActivate: [GuardService],
+      },
+      {
+        path: 'duyet-phim',
+        loadChildren: () =>
+          import('./pages/movie-approval/movie-approval.module').then(
+            (m) => m.MovieApprovalModule
+          ),
+        data: {
+          breadcrumb: 'Duyệt phim',
+       //   roles: [AppRoles.LEADER, AppRoles.DIRECTOR],
+       //   canActivate: [GuardService],
+        },
+      },
+      {
+        path: 'lich-phat-song',
+        loadChildren: () =>
+          import('./pages/board-casting/board-casting.module').then(
+            (m) => m.BoardCastingModule
+          ),
+        data: {
+          breadcrumb: 'Lịch phát sóng',
+          // routeKey: 'danhmuc',
+        //  roles: [AppRoles.LEADER, AppRoles.DIRECTOR],
+        },
+      //  canActivate: [GuardService],
+      },
+      {
+        path: 'search',
+        loadChildren: () =>
+          import('./pages/search/search.module').then((m) => m.SearchModule),
+        data: { breadcrumb: 'Tìm kiếm' },
+      //  canActivate: [GuardService],
+      },
 
+      // {
+      //   path: 'quan-ly-to-doi',
+      //   loadChildren: () =>
+      //     import('./pages/team-manage/team-manage.module').then(
+      //       (m) => m.TeamManageModule
+      //     ),
+      //   data: {
+      //     breadcrumb: 'Quản Lý Tổ Đội',
+      //     routeKey: 'quanlytodoi',
+      //   },
+      //   canActivate: [GuardService],
+      // },
+      {
+        path: '',
+        loadChildren: () =>
+          import('./pages/profile/profile.module').then((m) => m.ProfileModule),
+        data: { breadcrumb: 'Profile' },
+      },
+      {
+        path: 'Elastic',
+        loadChildren: () =>
+          import('./pages/elastic-settings/elastic-settings.module').then(
+            (m) => m.ElasticSettingsModule
+          ),
+        data: {
+          breadcrumb: 'Cài đặt tìm kiếm toàn văn',
+          // routeKey: 'danhmuc',
+        //  roles: [AppRoles.LEADER, AppRoles.DIRECTOR],
+        },
+      //  canActivate: [GuardService],
+      },
+      {
+        path: 'document',
+        loadChildren: () =>
+          import('./pages/document/document.module').then(
+            (m) => m.DocumentModule
+          ),
+        data: {
+          breadcrumb: 'Tài liệu',
+          // routeKey: 'danhmuc',
+          // roles: [AppRoles.LEADER, AppRoles.DIRECTOR],
+        },
+      //  canActivate: [GuardService],
+      },
+      {
+        path: 'bao-cao',
+        loadChildren: () =>
+          import('./pages/report/report.module').then((m) => m.ReportModule),
+        data: {
+          breadcrumb: 'Báo cáo',
+          // routeKey: 'danhmuc',
+        //  roles: [AppRoles.REPORTER],
+        },
+      //  canActivate: [GuardService],
+      },
+      {
+        path: 'notifications',
+        loadChildren: () =>
+          import('./pages/notification/notification.module').then(
+            (m) => m.NotificationModule
+          ),
+        data: {
+          breadcrumb: 'Thông báo',
+          // routeKey: 'danhmuc',
+        },
+      //  canActivate: [GuardService],
+      },
+    ],
+  },
+  {
+    path: 'login',
+    loadChildren: () =>
+      import('./pages/login/login.module').then((m) => m.LoginModule),
+  },
+  {
+    path: 'register',
+    loadChildren: () =>
+      import('./pages/register/register.module').then((m) => m.RegisterModule),
+  },
+  { path: '**', component: NotFoundComponent },
+];
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      preloadingStrategy: PreloadAllModules // <- comment this line for activate lazy load
-    })
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [RouterModule.forRoot(routes, {})],
+  exports: [RouterModule],
+  providers: [ApiService],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
