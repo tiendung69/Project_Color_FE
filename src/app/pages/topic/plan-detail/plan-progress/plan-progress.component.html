@@ -1,0 +1,268 @@
+<label class="label-title">Tiến độ từng phân đoạn</label>
+<!-- Thông tin tiến độ sản xuất  -->
+<div class="d-flex container-collapse" (click)="toggleForm()">
+  <div class="fa-1x mx-4 my-3">
+    <i [className]="isCollapsed ? 'fa fa-plus' : 'fa fa-minus'"></i>
+  </div>
+  <span class="label-custom">Thông tin tiến độ sản xuất</span>
+</div>
+<form (ngSubmit)="onSubmit()" #form="ngForm" [ngbCollapse]="isCollapsed">
+  <div id="collapseExample">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="form-group col-md-4" style="margin-top: -7px">
+            <label class="label-custom" for="Name">Loại chi phí*</label>
+            <ejs-dropdownlist
+            [readonly]="!enableForm || listPlan.Status == 5"
+              [dataSource]="listCate"
+              [value]="progressDetail.ExpenseType"
+              [fields]="field"
+              placeholder="Chọn loại chi phí" 
+              (change)="
+                onInputChange({ key: 'ExpenseType', value: $event.value })
+              "
+            >
+            </ejs-dropdownlist>
+            <p *ngIf="messageTypeCost" style="color: red">Thông tin này là bắt buộc</p>
+          </div>
+          <div class="form-group col-md-4" style="margin-top: -7px">
+            <label class="label-custom" for="Name">Phân đoạn*</label>
+            <ejs-dropdownlist
+            [readonly]="!enableForm || listPlan.Status == 5"
+              [dataSource]="listSegment"
+              [value]="progressDetail.SegmentId"
+              [fields]="dropdownProgress"
+              placeholder="Chọn phân đoạn"
+              (change)="
+                onInputChange({ key: 'SegmentId', value: $event.value })
+              "
+            >
+            </ejs-dropdownlist>
+            <p *ngIf="checkProgressName" style="color: red">Thông tin này là bắt buộc</p>
+          </div>
+          <div class="form-group col-md-2" style="margin-top: -7px">
+            <label class="label-custom" for="FromDate">Thời gian bắt đầu</label>
+            <ejs-datepicker
+              name="FromDate"
+              #default
+              format="dd/MM/yyyy"
+              [readonly]="!enableForm || listPlan.Status == 5"
+              [value]="progressDetail.FromDate"
+              placeholder="Thời gian bắt đầu"
+              rows="1"
+              (change)="onInputChange({ key: 'FromDate', value: $event.value })"
+            ></ejs-datepicker>
+          </div>
+          <div class="form-group col-md-2" style="margin-top: -7px">
+            <label class="label-custom" for="ToDate">Thời gian kết thúc</label>
+            <ejs-datepicker
+              name="ToDate"
+              format="dd/MM/yyyy"
+              #default
+              placeholder="Thời gian kết thúc"
+              [readonly]="!enableForm || listPlan.Status == 5"
+              [value]="progressDetail.ToDate"
+              rows="1"
+              (change)="onInputChange({ key: 'ToDate', value: $event.value })"
+            ></ejs-datepicker>
+          </div>
+          <div class="form-group col-md-3" style="margin-top: -7px">
+            <label class="label-custom" for="SegmentProgress"
+              >Tiến trình phân đoạn(%)</label
+            >
+            <ejs-textbox
+              name="SegmentProgress"
+              #default
+              type="number"
+              placeholder="Tiến trình phân đoạn"
+              [readonly]="!enableForm || listPlan.Status == 5"
+              [value]="progressDetail.SegmentProgress"
+              rows="1"
+              (change)="
+                onInputChange({ key: 'SegmentProgress', value: $event.value })
+              "
+            ></ejs-textbox>
+          </div>
+          <div class="form-group col-md-3" style="margin-top: -7px">
+            <label class="label-custom" for="Expense">Chi phí</label>
+            <ejs-textbox
+              name="Expense"
+              #default
+              type="number"
+              placeholder="Chi phí"
+              [readonly]="!enableForm || listPlan.Status == 5"
+              [value]="progressDetail.Expense"
+              rows="1"
+              (change)="onInputChange({ key: 'Expense', value: $event.value })"
+            ></ejs-textbox>
+          </div>
+          <div class="form-group col-md-3" style="margin-top: -7px">
+            <label class="label-custom" for="Note">Ghi chú</label>
+            <ejs-textbox
+              name="Note"
+              #default
+              placeholder="Ghi chú"
+              [readonly]="!enableForm || listPlan.Status == 5"
+              [value]="progressDetail.Note"
+              rows="1"
+              (change)="onInputChange({ key: 'Note', value: $event.value })"
+            ></ejs-textbox>
+          </div>
+          <div class="form-group col-md-3" style="margin-top: -7px">
+            <label class="label-custom" for="Note">Trạng thái</label>
+            <ejs-dropdownlist
+            name="status"
+              #default
+              placeholder="Trạng thái"
+              [dataSource]="listStatus"
+              [fields]="dropdownField"
+              [readonly]="!enableForm || listPlan.Status == 5"
+              [value]="progressDetail.Status"
+              rows="1"
+              (change)="onInputChange({ key: 'Status', value: $event.value })"
+            ></ejs-dropdownlist>
+          </div>
+          <div class="d-flex col justify-content-center mt-5" *ngIf="!check && enableForm">
+            <button
+              class="btn btn-secondary btn-custom mr-4 btn-custom-large py-2"
+              type="button"
+              (click)="onCancelClick()"
+            >
+              Hủy
+            </button>
+            <button
+              class="btn btn-primary btn-custom btn-custom-large py-2"
+              type="submit"
+              content="Save"
+            >
+              Lưu
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="hr"></div>
+<!-- Thông tin file cho từng tiến độ sản xuất  -->
+<div [ngbCollapse]="progressId ? false : true">
+  <div class="d-flex container-collapse" (click)="toggleForm1()">
+    <div class="fa-1x mx-4 my-3">
+      <i [className]="isCollapsed1 ? 'fa fa-plus' : 'fa fa-minus'"></i>
+    </div>
+    <span class="label-custom">Cập nhật video</span>
+  </div>
+  <ejs-grid
+    #gridVideo
+    [ngbCollapse]="isCollapsed1"
+    [dataSource]="listVideo"
+    [toolbar]="toolbarOptions"
+    [editSettings]="editSettings"
+    [allowPaging]="true"
+    [allowSorting]="true"
+    [allowTextWrap]="true"
+    [pageSettings]="{ pageSize: 5 }"
+    (actionBegin)="actionBegin($event)"
+    (actionComplete)="actionComplete($event)"
+    (rowDataBound)="rowDataBound($event)"
+    (commandClick)="commandClick($event)"
+  >
+    <e-columns>
+      <e-column field="VideoUrl" headerText="Tên file" width="40%">
+        <ng-template let-data #template
+          ><a
+            style="cursor: pointer"
+            *ngIf="data.VideoUrl"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="{{ data.Note }}"
+            (click)="onFileUrlClick(data.VideoUrl)"
+          >
+            {{ getFileName(data.VideoUrl) }}
+          </a></ng-template
+        >
+        <ng-template #editTemplate let-data>
+          <div
+            class="input-group file-upload"
+            *ngIf="!data?.VideoUrl; else other_content"
+          >
+            <input
+              type="file"
+              (change)="fileChange(input)"
+              #input
+              class="file-upload-btn"
+            />
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Choose a file..."
+              value="{{ file }}"
+            />
+            <i
+              class="fa fa-times delete-file"
+              (click)="removeFile()"
+              *ngIf="file"
+            ></i>
+            <span class="input-group-append">
+              <button class="btn btn-primary" type="button">
+                <i class="fa fa-upload"></i>
+              </button>
+            </span>
+          </div>
+          <ng-template #other_content
+            ><a
+              style="cursor: pointer"
+              class="form-control"
+              *ngIf="data.VideoUrl"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="{{ data.Note }}"
+              (click)="onFileUrlClick(data.VideoUrl)"
+            >
+              {{ getFileName(data.VideoUrl) }}
+            </a></ng-template
+          >
+          <p *ngIf="messageFile" style="color: red; margin-top: 7px">
+            Thông tin này là bắt buộc.
+          </p>
+        </ng-template>
+      </e-column>
+      <e-column field="Note" headerText="Mô tả" width="40%">
+        <ng-template #editTemplate let-data>
+          <div class="multiline">
+            <app-textarea-input
+              [multiline]="true"
+              key="Note"
+              [value]="data.Note"
+              (newItemEvent)="onInputVideoChange($event)"
+              placeHolder="Mô Tả"
+            ></app-textarea-input>
+          </div>
+        </ng-template>
+      </e-column>
+      <!-- <e-column
+        field="VideoSize"
+        headerText="Dung lượng video"
+        width="20%"
+
+      ></e-column> -->
+      <e-column
+      headerText=""
+      textAlign="Center"
+      width="90px"
+      [commands]="commands"
+    >
+    </e-column>
+    </e-columns>
+  </ejs-grid>
+</div>
+<app-video-compressor
+  *ngIf="open"
+  (addSuccess)="onSuccessUploadPart($event)"
+  (onHideModal)="onHideModal()"
+  [idUploadPart]="uploadPartId"
+></app-video-compressor>
+<div #container class="root-container"></div>
+<ejs-dialog #ejDialog [visible]="false" [target]="targetElement" width="300px">
+</ejs-dialog>
